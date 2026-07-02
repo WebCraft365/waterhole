@@ -137,6 +137,21 @@
 }
 .section-title.revealed { clip-path: inset(0 0 0% 0); }
 
+/* On mobile swap clip-path for a simpler opacity+slide (more reliable) */
+@media (max-width: 768px) {
+  .section-title {
+    clip-path: none;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.7s ease 0.05s, transform 0.7s cubic-bezier(0.16,1,0.3,1) 0.05s;
+  }
+  .section-title.revealed {
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+  }
+}
+
 /* ─── Eyebrow line draw ─── */
 .eyebrow {
   overflow: hidden;
@@ -1795,6 +1810,60 @@ a   { text-decoration: none; color: inherit; }
 .orbit-node:hover .orbit-node-label,
 .orbit-node.active .orbit-node-label { color: var(--gold); }
 
+/* ─── Mobile convictions grid (replaces orbital on small screens) ─── */
+.convictions-mobile-grid {
+  display: none; /* hidden by default — shown only on mobile */
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+.conviction-mobile-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 20px 18px 22px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.conviction-mobile-card:active {
+  transform: scale(0.97);
+  background: rgba(212,168,67,0.07);
+  border-color: rgba(212,168,67,0.3);
+}
+.conviction-mobile-icon {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: rgba(212,168,67,0.1);
+  border: 1px solid rgba(212,168,67,0.25);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--gold);
+  flex-shrink: 0;
+}
+.conviction-mobile-label {
+  font-family: var(--font-h);
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: -0.01em;
+}
+.conviction-mobile-sub {
+  font-size: 12px;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.4);
+}
+
+@media (max-width: 640px) {
+  .orbital-rig { display: none; }
+  .convictions-mobile-grid { display: grid; }
+}
+
 /* Popup */
 .conviction-popup {
   position: fixed;
@@ -2350,5 +2419,328 @@ a   { text-decoration: none; color: inherit; }
 @media (max-width: 480px) {
   .home-hero h1 { font-size: clamp(36px, 10vw, 52px); }
   .page-hero h1 { font-size: clamp(30px, 9vw, 48px); }
-  .hero-actions { flex-direction: column; align-items: flex-start; }
+  /* 1. Hero buttons — centre on mobile */
+  .hero-actions { flex-direction: column; align-items: center; width: 100%; }
+  .hero-actions .btn { width: 100%; justify-content: center; text-align: center; }
+}
+
+/* ═══════════════════════════════════════
+   COMPREHENSIVE MOBILE RESPONSIVE
+═══════════════════════════════════════ */
+
+/* Hide side section dots on mobile — not enough room */
+@media (max-width: 768px) {
+  .section-dots { display: none; }
+}
+
+/* ─── About hero ─── */
+.about-hero-subject { width: 58%; max-width: 720px; }
+.about-hero-subject img { height: 78vh; }
+
+@media (max-width: 768px) {
+  .about-hero-stat {
+    left: 20px;
+    bottom: 24px;
+  }
+  .about-hero-badge {
+    bottom: 24px;
+    right: 20px;
+    padding: 12px 14px;
+  }
+  .about-hero-badge-quote { font-size: 13px; }
+  .about-hero-subject { width: 88%; }
+  .about-hero-subject img { height: 62vh; }
+  .about-hero-text { padding-top: 80px; padding-left: 20px; padding-right: 20px; }
+  .about-hero-text .lead { font-size: 15px; }
+}
+
+/* ─── Philosophy split grid (Infinite Cycles / Structured Beauty) ─── */
+.philosophy-split-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+@media (max-width: 640px) {
+  .philosophy-split-grid { grid-template-columns: 1fr; }
+}
+
+/* ─── Philosophy hero — stack on mobile ─── */
+@media (max-width: 768px) {
+  .phil-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 0 28px;
+    position: relative;
+    text-align: center;
+  }
+  .phil-hero-bg {
+    background-position: center center;
+    background-size: cover;
+  }
+  .phil-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(8,8,8,0.55) 0%,
+      rgba(8,8,8,0.65) 50%,
+      rgba(8,8,8,0.82) 100%
+    );
+    z-index: 1;
+    pointer-events: none;
+  }
+  .phil-hero-left,
+  .phil-hero-right {
+    position: relative;
+    z-index: 2;
+    padding: 0;
+    text-align: center;
+    width: 100%;
+  }
+  .phil-hero-left { padding-top: 100px; padding-bottom: 12px; }
+  .phil-hero-right { padding-bottom: 60px; }
+  .phil-hero-center { display: none; }
+  .phil-hero-left .page-hero-tag { margin-bottom: 12px; }
+  .phil-hero-left h1 { font-size: clamp(36px, 10vw, 56px); margin: 0; }
+  .phil-hero-left h1 em { color: var(--gold); }
+  .phil-hero-right .lead { font-size: 15px; margin-bottom: 24px; color: rgba(255,255,255,0.82); }
+  .phil-hero-right .btn { display: inline-flex; }
+}
+
+/* ─── What We Offer hero — image as bg on mobile ─── */
+@media (max-width: 768px) {
+  .offer-hero {
+    display: block;
+    position: relative;
+    min-height: 100vh;
+  }
+  /* Image becomes full background */
+  .offer-hero-img {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+  }
+  .offer-hero-img img { object-position: center; }
+  /* Dark overlay for legibility */
+  .offer-hero-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.72) 0%,
+      rgba(0,0,0,0.60) 50%,
+      rgba(0,0,0,0.80) 100%
+    );
+  }
+  /* Text on top */
+  .offer-hero-text {
+    position: relative;
+    z-index: 2;
+    padding: 120px 28px 80px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .offer-hero-text h1 { font-size: clamp(34px, 9vw, 52px); text-align: center; }
+  .offer-hero-text .lead { font-size: 15px; color: rgba(255,255,255,0.75); text-align: center; }
+  .offer-hero-text .eyebrow { color: var(--gold); justify-content: center; }
+}
+
+/* ─── Journey intro 2-col → stack ─── */
+@media (max-width: 768px) {
+  .journey-intro {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    margin-bottom: 40px;
+  }
+  .journey-intro-img { aspect-ratio: 16/9; border-radius: 16px; overflow: hidden; }
+}
+
+/* ─── Cause grid ─── */
+@media (max-width: 768px) {
+  .cause-grid-v2 { gap: 40px; }
+  .cause-cards { grid-template-columns: 1fr; }
+  .cause-left, .cause-right { padding: 0; }
+}
+
+/* ─── Platform intro ─── */
+@media (max-width: 768px) {
+  .platform-intro { gap: 32px; }
+  .platform-intro-img { border-radius: 16px; overflow: hidden; max-height: 280px; }
+  .platform-intro-img img { object-fit: cover; height: 100%; }
+}
+
+/* ─── Statement section ─── */
+@media (max-width: 768px) {
+  .statement-section { padding: 80px 24px; overflow: hidden; }
+  .statement-section::before { width: 100vw; height: 100vw; }
+  .statement-quote { font-size: clamp(28px, 8vw, 48px); }
+}
+
+/* ─── Covenant ─── */
+@media (max-width: 768px) {
+  .covenant-section, .covenant-inner-section { padding: 80px 0; }
+  .covenant-word { font-size: clamp(44px, 14vw, 72px); }
+}
+
+/* ─── Closing CTA ─── */
+@media (max-width: 768px) {
+  .closing-cta { padding: 80px 0; }
+  .closing-cta h2 { font-size: clamp(28px, 8vw, 44px); }
+  .closing-cta .btns { flex-direction: column; align-items: center; }
+}
+
+/* ─── Who we are (about page) ─── */
+@media (max-width: 768px) {
+  .who-we-are { gap: 40px; }
+  .who-img { aspect-ratio: 4/3; }
+  .who-feature-cards { grid-template-columns: 1fr; }
+}
+
+/* ─── Philosophy pillars / badges / cycle ─── */
+@media (max-width: 768px) {
+  .covenant-badges { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .badge-card { padding: 24px 18px; }
+}
+@media (max-width: 480px) {
+  .covenant-badges { grid-template-columns: 1fr; }
+  .philosophy-pillars { grid-template-columns: 1fr; }
+  .prosperity-cycle { grid-template-columns: 1fr; gap: 24px; }
+}
+
+/* ─── Footer ─── */
+@media (max-width: 768px) {
+  .footer { padding: 64px 0 40px; }
+  .footer-grid { gap: 40px; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; gap: 12px; }
+}
+
+/* ─── Section padding on mobile ─── */
+@media (max-width: 480px) {
+  .section-pad { padding: 56px 0; }
+  .container { padding: 0 16px; }
+}
+
+/* ─── Prevent body overflow ─── */
+@media (max-width: 768px) {
+  body { overflow-x: hidden; }
+  .about-hero { overflow: hidden; }
+  .about-hero-watermark { font-size: clamp(48px, 20vw, 96px); }
+}
+
+/* ═══════════════════════════════════════
+   GLOBAL MOBILE TEXT ALIGNMENT
+   Centre-align all section content for
+   a clean, consistent flow on small screens
+═══════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Section headings, eyebrows, body copy */
+  .section-title,
+  .eyebrow,
+  .section-pad p,
+  .section-pad h2,
+  .section-pad h3,
+  .section-pad h4,
+  .divider,
+  .cause-lead,
+  .journey-intro p,
+  .who-text p,
+  .platform-intro-text p,
+  .philosophy-wealth-text p,
+  .foundation-section p,
+  .symbol-body,
+  .cycle-step p,
+  .cycle-step h4 { text-align: center; }
+
+  /* Eyebrow — full-width flex so justify-content centers the line + text */
+  .eyebrow { display: flex; justify-content: center; }
+
+  /* Divider — centre the bar */
+  .divider { margin-left: auto; margin-right: auto; }
+
+  /* Buttons / action rows — centre */
+  .hero-actions,
+  .who-actions,
+  .btns,
+  .cause-actions { justify-content: center; }
+
+  /* Home hero — centre text */
+  .home-hero-text { text-align: center; }
+  .home-eyebrow { justify-content: center; }
+
+  /* 2. Cause stats — centre */
+  .cause-stats-block { display: flex; justify-content: center; }
+  .cause-stats { justify-content: center; }
+  .cause-stat { text-align: center; }
+
+  /* 4. Our Promise journey cards — centre text */
+  .journey-card { text-align: center; }
+  .journey-num { text-align: center; }
+  /* Button under journey cards — centre */
+  .journey-section > .container > div[style] { text-align: center; }
+  .journey-section .btn { display: inline-flex; }
+
+  /* 5. WE HAVE ME covenant — centre words */
+  .covenant-inner { text-align: center; }
+  .covenant-word { text-align: center; }
+  .covenant-sub { text-align: center; }
+  .covenant-lead { text-align: center; }
+  .covenant-text { text-align: center; }
+  .covenant-text p { text-align: center; }
+
+  /* 6. Read Our Philosophy button — centre */
+  .covenant-text div[style] { text-align: center; display: flex; justify-content: center; }
+
+  /* 7. Footer brand paragraph — centre */
+  .footer-brand p { text-align: center; }
+  .footer-covenant { text-align: center; }
+
+  /* Cause / journey / platform text blocks */
+  .cause-left,
+  .cause-right,
+  .platform-intro-text,
+  .philosophy-wealth-text,
+  .who-text { text-align: center; }
+
+  /* Pillar, foundation, cause cards — centre their inner text */
+  .pillar-card,
+  .foundation-card,
+  .cause-card { text-align: center; }
+  .pillar-num { text-align: center; }
+
+  /* Journey intro text */
+  .journey-intro { text-align: center; }
+
+  /* Prosperity cycle dots — centre */
+  .cycle-dot { margin: 0 auto 12px; }
+
+  /* About page sections */
+  .about-hero-text { text-align: center; }
+  .badge-letter, .badge-card h3, .badge-card p { text-align: center; }
+
+  /* Centre max-width intro blocks that have inline styles */
+  .container > .fade-in { margin-left: auto; margin-right: auto; }
+
+  /* Reject/build cards — stack and center */
+  .reject-build { grid-template-columns: 1fr; }
+  .reject-card, .build-card { text-align: center; }
+  .reject-card ul, .build-card ul { list-style: none; padding: 0; }
+
+  /* Footer brand copy */
+  .footer-brand { text-align: center; }
+  .footer-brand img { margin: 0 auto 16px; display: block; }
+  .footer-col h4,
+  .footer-col ul { text-align: center; }
+  .footer-bottom { text-align: center; align-items: center; }
+  .footer-legal { justify-content: center; }
 }

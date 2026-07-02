@@ -172,14 +172,17 @@ document.addEventListener('click', e => {
   els.forEach(el => io.observe(el));
 })();
 
-// ─── Section title clip reveal ───
+// ─── Section title reveal ───
 (function () {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('.section-title').forEach(el => el.classList.add('revealed'));
+    return;
+  }
   const io = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting) { e.target.classList.add('revealed'); io.unobserve(e.target); }
     });
-  }, { threshold: 0.2, rootMargin: '0px 0px -40px 0px' });
+  }, { threshold: 0.05, rootMargin: '0px 0px 0px 0px' });
   document.querySelectorAll('.section-title').forEach(el => io.observe(el));
 })();
 
@@ -513,6 +516,12 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   nodes.forEach(node => {
     node.addEventListener('click', () => openPopup(+node.dataset.idx));
   });
+
+  // Mobile grid cards — same popup
+  document.querySelectorAll('.conviction-mobile-card').forEach(card => {
+    card.addEventListener('click', () => openPopup(+card.dataset.idx));
+  });
+
   closeBtn.addEventListener('click', closePopup);
   backdrop.addEventListener('click', closePopup);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closePopup(); });
