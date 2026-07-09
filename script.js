@@ -35,7 +35,7 @@
   const loader = document.createElement('div');
   loader.className = 'page-loader';
   loader.innerHTML = `
-    <img class="page-loader-logo" src="assets/logo.png" alt="" />
+    <img class="page-loader-logo" src="assets/new-logo.png" alt="" />
     <div class="page-loader-line"></div>
     <div class="page-loader-text">WE HAVE ME.</div>
   `;
